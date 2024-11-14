@@ -21,7 +21,7 @@ def handle_connection(connection, client_address):
         # Recibir los datos en pequeños fragmentos y retransmitirlos
         while True:
             data = connection.recv(16)
-            print('Recibido {!r}'.format(data.decode('utf-8')))
+            print('Recibido {!r} desde {}'.format(data.decode('utf-8'), client_address))
             if data == b'DESCONEXION':
                 break
 
