@@ -1,4 +1,5 @@
 import socket
+import threading
 import sys
 
 # Crear un socket TCP/IP
@@ -12,10 +13,8 @@ sock.bind(server_address)
 # Escuchar por conexiones entrantes
 sock.listen(1)
 
-while True:
-    # Esperar una conexión
-    print('Esperando conexión.')
-    connection, client_address = sock.accept()
+
+def handle_connection(connection, client_address):
     try:
         print('Conexión desde: ', client_address)
 
@@ -33,8 +32,17 @@ while True:
             
             connection.sendall(data)
                 
-
     finally:
         # Cerrando conexión
         print('Cliente cierra la conexión con el servidor.')
         connection.close()
+
+if __name__ == '__main__':
+    while True:
+        # Esperar una conexión
+        print('Esperando conexión.')
+        connection, client_address = sock.accept()
+        threading.Thread(target=handle_connection, args=(connection, client_address)).start()
+        
+
+    
